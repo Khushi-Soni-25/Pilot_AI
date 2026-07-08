@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProjectPilot AI</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar" aria-label="Main navigation">
+        <a class="brand" href="#home" aria-label="ProjectPilot AI home">
+          <span class="brand-mark">PP</span>
+          <span>ProjectPilot AI</span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation">
+          <span></span>CONTINUE
+          
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#recommendations">Recommendations</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero section-shell" id="home">
+        <div class="hero-content fade-in">
+          <p class="eyebrow">AI-powered project discovery for students</p>
+          <h1>Find the right project for your skills, goals, and timeline.</h1>
+          <p class="hero-copy">
+            ProjectPilot AI recommends practical, internship-ready projects and
+            gives you a roadmap, tools, datasets, APIs, and next-step learning
+            resources.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#recommendations">
+              Get Started
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="secondary-button" href="#about">Learn More</a>
+          </div>
+          <div class="hero-stats" aria-label="ProjectPilot AI highlights">
+            <div>
+              <strong>5</strong>
+              <span>inputs</span>
+            </div>
+            <div>
+              <strong>10+</strong>
+              <span>starter ideas</span>
+            </div>
+            <div>
+              <strong>100%</strong>
+              <span>free resources</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual fade-in" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="ai-panel">
+            <div class="panel-header">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="panel-body">
+              <div class="signal-card">
+                <span class="signal-icon">AI</span>
+                <div>
+                  <strong>Recommendation Engine</strong>
+                  <p>TF-IDF + cosine similarity</p>
+                </div>
+              </div>
+              <div class="meter">
+                <span style="width: 88%"></span>
+              </div>
+              <div class="mini-grid">
+                <span>Domain</span>
+                <span>Skills</span>
+                <span>Time</span>
+                <span>Language</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="recommendation-section section-shell" id="recommendations">
+        <div class="section-heading fade-in">
+          <p class="eyebrow">Project matcher</p>
+          <h2>Tell us what you want to build.</h2>
+          <p>
+            Fill in your preferences and the frontend will call the existing
+            backend API to generate ranked project recommendations.
+          </p>
+        </div>
+
+        <div class="app-layout">
+          <form class="preference-form fade-in" id="preferenceForm" novalidate>
+            <div class="form-header">
+              <span class="form-icon">⌁</span>
+              <div>
+                <h3>Your Preferences</h3>
+                <p>Choose what matters most for your next project.</p>
+              </div>
+            </div>
+
+            <label>
+              <span>Domain</span>
+              <select id="domain" name="domain" required>
+                <option value="">Loading domains...</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Skill Level</span>
+              <select id="skillLevel" name="skill_level" required>
+                <option value="">Loading skill levels...</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Interests</span>
+              <input
+                id="interests"
+                name="interests"
+                type="text"
+                placeholder="Example: NLP, finance, dashboard"
+                minlength="2"
+                required
+              />
+            </label>
+
+            <div class="two-column">
+              <label>
+                <span>Available Time</span>
+                <select id="availableTime" name="available_time" required>
+                  <option value="">Loading time options...</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Language</span>
+                <select id="preferredLanguage" name="preferred_language" required>
+                  <option value="">Loading languages...</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              <span>Number of results</span>
+              <input id="topN" name="top_n" type="range" min="3" max="10" value="5" />
+              <small><span id="topNValue">5</span> recommendations</small>
+            </label>
+
+            <p class="form-error" id="formError" role="alert"></p>
+
+            <button class="primary-button submit-button" type="submit">
+              Generate Recommendations
+              <span aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <div class="results-panel fade-in">
+            <div class="results-header">
+              <div>
+                <p class="eyebrow">Recommendations</p>
+                <h3>Top Matches</h3>
+              </div>
+              <span class="api-status" id="apiStatus">Checking API...</span>
+            </div>
+
+            <div class="loading-state hidden" id="loadingState">
+              <span class="spinner"></span>
+              <p>Finding your best project matches...</p>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+              <strong>Ready when you are.</strong>
+              <p>Your recommended projects will appear here after you submit the form.</p>
+            </div>
+
+            <div class="cards-grid" id="resultsGrid" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="details-section section-shell hidden" id="projectDetails">
+        <div class="details-header">
+          <div>
+            <p class="eyebrow">Selected project</p>
+            <h2 id="detailTitle"></h2>
+            <p id="detailDescription"></p>
+          </div>
+          <button class="secondary-button" type="button" id="closeDetails">Close Details</button>
+        </div>
+
+        <div class="detail-meta" id="detailMeta"></div>
+
+        <div class="tabs" role="tablist" aria-label="Project details">
+          <button class="tab-button active" type="button" data-tab="roadmap">Roadmap</button>
+          <button class="tab-button" type="button" data-tab="skills">Skills & Tools</button>
+          <button class="tab-button" type="button" data-tab="resources">Resources</button>
+          <button class="tab-button" type="button" data-tab="future">Future Scope</button>
+        </div>
+
+        <div class="tab-content active" id="tab-roadmap"></div>
+        <div class="tab-content" id="tab-skills"></div>
+        <div class="tab-content" id="tab-resources"></div>
+        <div class="tab-content" id="tab-future"></div>
+      </section>
+
+      <section class="about-section section-shell" id="about">
+        <div class="section-heading fade-in">
+          <p class="eyebrow">About</p>
+          <h2>Built for AI/ML internship demonstrations.</h2>
+          <p>
+            The frontend is intentionally separated from the backend. This makes
+            the project easier to explain, test, and expand into a larger product.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span>01</span>
+            <h3>Explainable matching</h3>
+            <p>Students can understand why projects are recommended.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Learning-first details</h3>
+            <p>Every project includes tools, roadmap, resources, and future scope.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Backend-ready UI</h3>
+            <p>The interface calls the existing FastAPI endpoints directly.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-section section-shell" id="contact">
+        <div class="contact-card fade-in">
+          <p class="eyebrow">Contact</p>
+          <h2>ProjectPilot AI</h2>
+          <p>
+            Placeholder contact section for demo day. Add your email, GitHub,
+            LinkedIn, or project repository link here.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>ProjectPilot AI · Intelligent Project Recommendation & Learning Assistant</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
