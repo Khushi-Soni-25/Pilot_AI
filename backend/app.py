@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from schemas import (
+from backend.schemas import (
     FilterOptions,
     HealthResponse,
     ProjectDetail,
@@ -14,7 +14,7 @@ from schemas import (
     RecommendationRequest,
     RecommendationResponse,
 )
-from database import (
+from backend.database import (
     get_database_status,
     initialize_database,
     load_projects_from_mongodb,
